@@ -2,9 +2,11 @@ package com.pico.mydicitonary.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.gson.Gson
 import com.pico.mydicitonary.feature_dictionary.data.local.WordInfoDatabase
 import com.pico.mydicitonary.feature_dictionary.data.remote.DictionaryApi
 import com.pico.mydicitonary.feature_dictionary.data.repository.WordInfoRepositoryImpl
+import com.pico.mydicitonary.feature_dictionary.data.utils.GsonParser
 import com.pico.mydicitonary.feature_dictionary.domain.repository.WordInfoRepository
 import com.pico.mydicitonary.feature_dictionary.domain.use_case.GetWordInfo
 import dagger.Module
@@ -23,7 +25,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideWordInfoDatabase(@ApplicationContext ctx: Context): WordInfoDatabase {
-        return Room.databaseBuilder(ctx, WordInfoDatabase::class.java, "word_info_db").build()
+        return Room.databaseBuilder(ctx, WordInfoDatabase::class.java, "word_info_db")
+            .addTypeConverter(GsonParser(Gson())).build()
     }
 
     @Provides
