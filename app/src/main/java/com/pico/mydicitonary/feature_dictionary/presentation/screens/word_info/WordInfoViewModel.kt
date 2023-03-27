@@ -12,9 +12,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class WordInfoViewModel(private val getWordInfo: GetWordInfo) : ViewModel() {
+class WordInfoViewModel @Inject constructor (private val getWordInfo: GetWordInfo) : ViewModel() {
 
     var searchQuery by mutableStateOf("")
         private set
@@ -32,7 +33,7 @@ class WordInfoViewModel(private val getWordInfo: GetWordInfo) : ViewModel() {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500L)
-            getWordInfo(searchQuery).onEach {
+            getWordInfo(query).onEach {
                 when(it){
                     is Resource.Success -> {
                         uiState = uiState.copy(wordInfos = it.data, isLoading = false)

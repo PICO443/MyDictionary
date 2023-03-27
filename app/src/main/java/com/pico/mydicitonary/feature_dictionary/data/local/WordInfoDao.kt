@@ -2,13 +2,14 @@ package com.pico.mydicitonary.feature_dictionary.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.pico.mydicitonary.feature_dictionary.data.local.entities.WordInfoEntity
 
 @Dao
 interface WordInfoDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWordInfos(wordInfos: List<WordInfoEntity>)
 
     @Query("DELETE FROM WordInfoEntity WHERE word IN(:words)")
